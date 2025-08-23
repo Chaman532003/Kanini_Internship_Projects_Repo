@@ -1,0 +1,6 @@
+@SportsLeagueDB_HostAddress = http://localhost:5132
+
+GET {{SportsLeagueDB_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

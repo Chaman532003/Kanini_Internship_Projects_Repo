@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.Core.Models;
+using SportsLeagueDB.SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.SportsLeagueDB.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,40 +28,32 @@ namespace SportsLeagueDB.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GenerateToken([FromBody] User loginUser)
+        public async Task<IActionResult> GenerateToken([FromBody] UserLoginDto loginDto)
         {
-            if (await IsValidUserCredentials(loginUser.Email, loginUser.PasswordHash))
-            {
-                var tokenString = GenerateJwtToken(loginUser.Email);
-                return Ok(new { token = tokenString });
-            }
-            else
-            {
-                return Unauthorized("Invalid credentials");
-            }
-        }
-
-        private async Task<bool> IsValidUserCredentials(string email, string password)
-        {
-            // Validate user against the stored user data
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(loginDto.Email);
             if (user == null)
-                return false;
+                return Unauthorized("Invalid credentials");
 
-            // Here you should verify the password hash properly instead of direct comparison
-            return user.PasswordHash == password;
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+
+            if (result == PasswordVerificationResult.Failed)
+                return Unauthorized("Invalid credentials");
+
+            var tokenString = GenerateJwtToken(user.Email, user.Role);
+            return Ok(new { token = tokenString });
         }
 
-        private string GenerateJwtToken(string email)
+        private string GenerateJwtToken(string email, string role)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, email)
-        // Add roles or other claims if needed
-    };
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, role)
+            };
 
             var token = new JwtSecurityToken(
                 expires: DateTime.UtcNow.AddHours(1),
@@ -67,6 +62,5 @@ namespace SportsLeagueDB.API.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

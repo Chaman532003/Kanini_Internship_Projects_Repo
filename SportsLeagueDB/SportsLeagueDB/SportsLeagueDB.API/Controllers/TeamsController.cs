@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.Core.Models;
 using SportsLeagueDB.SportsLeagueDB.Interfaces;
@@ -19,6 +20,8 @@ namespace SportsLeagueDB.API.Controllers
             _teamService = teamService;
         }
 
+        // All roles can view teams
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
         {
@@ -34,6 +37,7 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dtos);
         }
 
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamDto>> GetTeam(int id)
         {
@@ -51,6 +55,8 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dto);
         }
 
+        // Only Admin can create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateTeam([FromBody] TeamDto teamDto)
         {
@@ -65,6 +71,8 @@ namespace SportsLeagueDB.API.Controllers
             return CreatedAtAction(nameof(GetTeam), new { id = team.TeamId }, teamDto);
         }
 
+        // Admin and Manager can update
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTeam(int id, [FromBody] TeamDto teamDto)
         {
@@ -82,6 +90,8 @@ namespace SportsLeagueDB.API.Controllers
             return NoContent();
         }
 
+        // Only Admin can delete
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTeam(int id)
         {
@@ -92,8 +102,8 @@ namespace SportsLeagueDB.API.Controllers
             return NoContent();
         }
 
-        // Additional methods
-
+        // All roles can query
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("ByCity/{city}")]
         public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeamsByCity(string city)
         {
@@ -109,6 +119,7 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dtos);
         }
 
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("TopWinning/{count}")]
         public async Task<ActionResult<IEnumerable<TeamDto>>> GetTopWinningTeams(int count)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.Core.Models;
 using SportsLeagueDB.SportsLeagueDB.Interfaces;
@@ -64,7 +65,7 @@ namespace SportsLeagueDB.API.Controllers
             await _userTeamService.AddUserTeamAsync(userTeam);
             return CreatedAtAction(nameof(GetUserTeam), new { id = userTeam.UserTeamId }, userTeamDto);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUserTeam(int id, [FromBody] UserTeamDto userTeamDto)
         {
@@ -81,7 +82,7 @@ namespace SportsLeagueDB.API.Controllers
             await _userTeamService.UpdateUserTeamAsync(userTeam);
             return NoContent();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserTeam(int id)
         {

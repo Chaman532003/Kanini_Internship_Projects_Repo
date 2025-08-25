@@ -9,5 +9,6 @@ namespace SportsLeagueDB.SportsLeagueDB.Interfaces
         Task AddAsync(SportsLeague league);
         Task UpdateAsync(SportsLeague league);
         Task DeleteAsync(int id);
+        
     }
 }

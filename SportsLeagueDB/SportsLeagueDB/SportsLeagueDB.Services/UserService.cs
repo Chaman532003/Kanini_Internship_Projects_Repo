@@ -27,7 +27,7 @@ namespace SportsLeagueDB.Services
 
         public async Task AddUserAsync(User user)
         {
-            // You may want to handle password hashing here
+            
             await _userRepository.AddAsync(user);
         }
 

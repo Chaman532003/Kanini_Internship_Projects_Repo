@@ -170,3 +170,10 @@ C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\obj\Debug\net8.0\Spor
 C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\obj\Debug\net8.0\SportsLeagueDB.genruntimeconfig.cache
 C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\obj\Debug\net8.0\ref\SportsLeagueDB.dll
 C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\appsettings.json
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\Microsoft.Extensions.WebEncoders.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
+C:\Users\Chaman\Source\Repos\SportsLeagueDB\SportsLeagueDB\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

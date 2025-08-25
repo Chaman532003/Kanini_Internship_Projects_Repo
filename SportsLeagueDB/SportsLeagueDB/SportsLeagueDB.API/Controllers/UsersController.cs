@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.Core.Models;
 using SportsLeagueDB.SportsLeagueDB.Interfaces;
@@ -50,17 +51,28 @@ namespace SportsLeagueDB.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser([FromBody] UserDto userDto)
+        public async Task<ActionResult> CreateUser([FromBody] UserRegistrationDto userDto)
         {
+            var hasher = new PasswordHasher<User>();
+
             var user = new User
             {
                 UserName = userDto.UserName,
                 Email = userDto.Email,
-                Role = userDto.Role,
-                PasswordHash = "" // Placeholder - handle password properly
+                Role = userDto.Role
             };
+
+            // Hash the password
+            user.PasswordHash = hasher.HashPassword(user, userDto.Password);
+
             await _userService.AddUserAsync(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, userDto);
+            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, new UserDto
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role
+            });
         }
 
         [HttpPut("{id}")]

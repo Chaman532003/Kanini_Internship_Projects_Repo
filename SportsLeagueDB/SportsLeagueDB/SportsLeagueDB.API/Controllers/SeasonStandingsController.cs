@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsLeagueDB.Core.DTOs;
 using SportsLeagueDB.Core.Models;
 using SportsLeagueDB.SportsLeagueDB.Interfaces;
@@ -19,6 +20,8 @@ namespace SportsLeagueDB.API.Controllers
             _seasonStandingService = seasonStandingService;
         }
 
+        // All roles can view standings
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SeasonStandingDto>>> GetSeasonStandings()
         {
@@ -36,6 +39,7 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dtos);
         }
 
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<SeasonStandingDto>> GetSeasonStanding(int id)
         {
@@ -55,6 +59,8 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dto);
         }
 
+        // Only Admin can create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateSeasonStanding([FromBody] SeasonStandingDto standingDto)
         {
@@ -71,6 +77,8 @@ namespace SportsLeagueDB.API.Controllers
             return CreatedAtAction(nameof(GetSeasonStanding), new { id = standing.StandingId }, standingDto);
         }
 
+        // Admin and Manager can update
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateSeasonStanding(int id, [FromBody] SeasonStandingDto standingDto)
         {
@@ -90,6 +98,8 @@ namespace SportsLeagueDB.API.Controllers
             return NoContent();
         }
 
+        // Only Admin can delete
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSeasonStanding(int id)
         {
@@ -100,8 +110,8 @@ namespace SportsLeagueDB.API.Controllers
             return NoContent();
         }
 
-        // Additional endpoints
-
+        // All roles can query
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("BySeason/{seasonYear}")]
         public async Task<ActionResult<IEnumerable<SeasonStandingDto>>> GetStandingsBySeason(int seasonYear)
         {
@@ -119,6 +129,7 @@ namespace SportsLeagueDB.API.Controllers
             return Ok(dtos);
         }
 
+        [Authorize(Roles = "Player,Manager,User,Admin")]
         [HttpGet("TopPerforming/{count}")]
         public async Task<ActionResult<IEnumerable<SeasonStandingDto>>> GetTopPerformingTeams(int count)
         {

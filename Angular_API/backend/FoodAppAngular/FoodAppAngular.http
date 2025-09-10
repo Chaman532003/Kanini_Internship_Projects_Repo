@@ -1,0 +1,6 @@
+@FoodAppAngular_HostAddress = http://localhost:5179
+
+GET {{FoodAppAngular_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

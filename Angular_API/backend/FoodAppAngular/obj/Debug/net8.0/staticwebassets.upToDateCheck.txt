@@ -1,0 +1,3 @@
+wwwroot\FoodImages\chapathi.JPG
+wwwroot\FoodImages\dosa.jpeg
+wwwroot\FoodImages\idli.jpg

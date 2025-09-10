@@ -1,0 +1,22 @@
+<h1>Available Foods</h1>
+<ul>
+   <div class="d-flex flex-wrap gap-3">
+  @for (food of foods; track food.id) {
+    <div class="card" style="width: 18rem;">
+      <img [src]="food.imageUrl" class="card-img-top" alt="{{food.name}}" width = 300 height = 300>
+      <div class="card-body text-center">
+        <p class="card-text"><strong>{{ food.name }}</strong></p>
+        <p class="card-text">{{ food.category }}</p>
+        <p class="card-text">₹{{ food.price }}</p>
+        <button>Click here</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="viewDetails(food)">View Details</button> -->
+        <!-- <button   type="button" class="btn btn-primary" (click)="addFood(food)">Add to Cart</button> -->
+        <!-- <button type="button" class="btn btn-primary" (click)="clearCart(food)">Clear the Cart</button>
+        <button type="button" class="btn btn-primary" (click)="removeCart(food)">remove the Cart</button> -->
+      </div>
+    </div>
+  }
+</div>
+
+
+</ul>
